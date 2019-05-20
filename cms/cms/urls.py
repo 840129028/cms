@@ -13,12 +13,45 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.views.static import serve
+from rest_framework.documentation import include_docs_urls
+
 from django.contrib import admin
-from django.urls import path
-# from extra_apps import xadmin
+from django.urls import path, re_path, include
+
+from article.views import  ArticleListViewSet, CategoryViewset
 import xadmin
+from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken import views
+# from rest_framework_jwt.views import obtain_jwt_token
+router = DefaultRouter()
+
+# 配置Article的url
+router.register(r'categories', CategoryViewset, base_name="categories")
+
+# 配置Category的url
+router.register(r'articles', ArticleListViewSet, base_name="articles")
+
 
 urlpatterns = [
-    path('', xadmin.site.urls),
-    # path('', admin.site.urls),
+    path('xadmin/', xadmin.site.urls),
+    path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls')),
+    # 富文本相关url
+    path('ueditor/', include('DjangoUeditor.urls')),
+    # router的path路径
+    re_path('^', include(router.urls)),
+    # 自动化文档,1.11版本中不加$符号
+    # path('docs/', include_docs_urls(title='CMS内容管理文档')),
+    # 调试登录
+    # path('api-auth/', include('rest_framework.urls')),
+    # drf自带的token授权登录,获取token需要向该地址post数据
+    path('api-token-auth/', views.obtain_auth_token),
+
 ]
+
+from django.conf import settings
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -38,6 +38,26 @@ def save_upload_file(PostFile, FilePath):
         return u"写入文件错误:%s" % e
     f.close()
     return u"SUCCESS"
+# def save_upload_file(PostFile,FilePath,action):
+#
+#     if action == 'uploadfile':
+#         FilePathWrite = FilePath+'/'+str(PostFile)
+#     elif action == 'uploadimage':
+#         FilePathWrite = FilePath+'/'+str(PostFile)
+#     #elif action == 'uploadvideo':
+#     # FilePathWrite = videofile(FilePath,'/video/')
+#     else:
+#         FilePathWrite = FilePath
+#
+#     try:
+#         f = open(FilePathWrite, 'wb')
+#         for chunk in PostFile.chunks():
+#             f.write(chunk)
+#     except Exception as E:
+#         f.close()
+#         return u"写入文件错误:"+ E.message
+#     f.close()
+#     return u"SUCCESS"
 
 
 @csrf_exempt
@@ -221,6 +241,8 @@ def UploadFile(request):
         'state': state,
         'size': upload_file_size
     }
+
+
     return HttpResponse(json.dumps(return_info, ensure_ascii=False), content_type="application/javascript")
 
 
@@ -283,7 +305,9 @@ def catcher_remote_image(request):
         "list": catcher_infos
     }
 
+
     return HttpResponse(json.dumps(return_info, ensure_ascii=False), content_type="application/javascript")
+
 
 
 def get_output_path(request, path_format, path_format_var):

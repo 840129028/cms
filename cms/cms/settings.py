@@ -31,7 +31,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+# 此处重载是为了使我们的UserProfile生效
+AUTH_USER_MODEL = "users.UserProfile"
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,7 +49,13 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'rest_framework.authtoken',
+    # 'corsheaders',
+    # 'rest_framework.authtoken',
+    # 'social_django',
+    # 'raven.contrib.django.raven_compat',
+    # 'jet',
     'users',
+    'article'
 ]
 
 # 所有drf相关的设置
@@ -149,3 +156,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static')
 ]
+
+MEDIA_URL='/upload/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'upload/')#这个是在浏览器上访问该上传文件的url的前缀
+
