@@ -18,19 +18,6 @@ class Category(models.Model):
     def __str__(self):
         return self.type
 
-#
-# class Lmsg(models.Model):
-#     """
-#     留言评论
-#     """
-#     content = models.TextField(verbose_name="留言内容")
-#     user = models.ForeignKey(User,on_delete=models.CASCADE,verbose_name="用户")
-#     time = models.DateField(default=datetime.now,verbose_name="留言时间")
-#
-#     class Meta:
-#         verbose_name = '文章留言'
-#         verbose_name_plural = verbose_name
-
 
 
 class Article(models.Model):

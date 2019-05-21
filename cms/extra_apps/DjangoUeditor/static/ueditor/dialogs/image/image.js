@@ -777,7 +777,10 @@
                     _src: prefix + data.url,
                     title: data.title,
                     alt: data.original,
-                    floatStyle: align
+                    floatStyle: align,
+                    //添加宽度和高度
+                    width: '45%',
+                    height:'200'
                 });
             }
             return list;

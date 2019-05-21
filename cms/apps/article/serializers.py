@@ -13,8 +13,3 @@ class ArticleSerializers(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = "__all__"
-#
-# class LmsgSerializaers(serializers.ModelSerializer):
-#     class Meta:
-#         model = Lmsg
-#         fields = "__all__"

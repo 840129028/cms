@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-
+import datetime
 import os
 import sys
 
@@ -48,28 +48,39 @@ INSTALLED_APPS = [
     'DjangoUeditor',
     'rest_framework',
     'django_filters',
-    'rest_framework.authtoken',
-    # 'corsheaders',
     # 'rest_framework.authtoken',
+    # 'corsheaders',
     # 'social_django',
     # 'raven.contrib.django.raven_compat',
     # 'jet',
     'users',
-    'article'
+    'article',
+    'course',
+
 ]
 
-# 所有drf相关的设置
+# django-rest-framework设置
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated cms_users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    # 每页显示的个数
+    # 'PAGE_SIZE': 10,
+
+    # 设置所有接口都需要被验证
+    'DEFAULT_PERMISSION_CLASSES': (
+        # 'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.IsAdminUser',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
 }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -77,12 +88,21 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# CORS_ORIGIN_WHITELIST = (
+#     '*'
+#     # '127.0.0.1:8000',# 请求的域名
+#     # 'localhost:8000',
+#     # 'localhost',
+# )
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
 ROOT_URLCONF = 'cms.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -160,3 +180,7 @@ STATICFILES_DIRS = [
 MEDIA_URL='/upload/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'upload/')#这个是在浏览器上访问该上传文件的url的前缀
 
+# 设置token的过期时间
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
+}
